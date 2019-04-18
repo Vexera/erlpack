@@ -39,9 +39,12 @@ NAN_METHOD(Unpack) {
     info.GetReturnValue().Set(value.ToLocalChecked());
 }
 
-void Init(Handle<Object> exports) {
+void Init(Local<Object> exports) {
     exports->Set(Nan::New("pack").ToLocalChecked(), Nan::New<FunctionTemplate>(Pack)->GetFunction());
     exports->Set(Nan::New("unpack").ToLocalChecked(), Nan::New<FunctionTemplate>(Unpack)->GetFunction());
 }
 
-NODE_MODULE(erlpack, Init);
+// Declare this addon as context-aware.
+NODE_MODULE_INIT(/* exports, module, context */) {
+    Init(exports);
+}
